@@ -41,13 +41,26 @@ export function AuthPage() {
 
       <input
         className={styles["auth-input"]}
-        type="password"
-        placeholder={Locale.Auth.Input}
-        value={accessStore.accessCode}
+        type="text"
+        placeholder={"用户名"}
+        value={accessStore.username}
         onChange={(e) => {
           accessStore.update(
-            (access) => (access.accessCode = e.currentTarget.value),
+            (access) => (access.username = e.currentTarget.value),
           );
+          console.log(accessStore.username, "没有修改成功用户名吗");
+        }}
+      />
+      <input
+        className={styles["auth-input"]}
+        type="password"
+        placeholder={"密码"}
+        value={accessStore.password}
+        onChange={(e) => {
+          accessStore.update(
+            (access) => (access.password = e.currentTarget.value),
+          );
+          console.log(accessStore.password, "没有修改成功用户密码吗");
         }}
       />
       {!accessStore.hideUserApiKey ? (
@@ -82,7 +95,12 @@ export function AuthPage() {
         <IconButton
           text={Locale.Auth.Confirm}
           type="primary"
-          onClick={goChat}
+          onClick={() => {
+            // The code added by qcy cause there is no access code in this page use username and password to login
+            accessStore.update((access) => (access.accessCode = "123123"));
+            // qcy added done
+            goChat();
+          }}
         />
         <IconButton
           text={Locale.Auth.Later}

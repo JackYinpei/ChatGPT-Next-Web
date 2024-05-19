@@ -42,7 +42,7 @@ declare global {
 }
 
 const ACCESS_CODES = (function getAccessCodes(): Set<string> {
-  const code = process.env.CODE;
+  const code = "123123";
 
   try {
     const codes = (code?.split(",") ?? [])
@@ -126,14 +126,14 @@ export const getServerSideConfig = () => {
 
     gtmId: process.env.GTM_ID,
 
-    needCode: ACCESS_CODES.size > 0,
-    code: process.env.CODE,
+    needCode: true,
+    code: "123123",
     codes: ACCESS_CODES,
 
     proxyUrl: process.env.PROXY_URL,
     isVercel: !!process.env.VERCEL,
 
-    hideUserApiKey: !!process.env.HIDE_USER_API_KEY,
+    hideUserApiKey: true,
     disableGPT4,
     hideBalanceQuery: !process.env.ENABLE_BALANCE_QUERY,
     disableFastLink: !!process.env.DISABLE_FAST_LINK,

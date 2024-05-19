@@ -44,12 +44,14 @@ const DEFAULT_ACCESS_STATE = {
 
   // server config
   needCode: true,
-  hideUserApiKey: false,
+  username: "",
+  password: "",
+  // hideUserApiKey: false,
+  hideUserApiKey: true,
   hideBalanceQuery: false,
   disableGPT4: false,
   disableFastLink: false,
   customModels: "",
-  defaultModel: "",
 };
 
 export const useAccessStore = createPersistStore(

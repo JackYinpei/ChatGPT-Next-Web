@@ -186,6 +186,8 @@ export function getHeaders() {
       );
     }
   }
+  headers["username"] = accessStore.username;
+  headers["password"] = accessStore.password;
 
   return headers;
 }

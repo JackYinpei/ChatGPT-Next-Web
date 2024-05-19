@@ -24,7 +24,65 @@ function parseApiKey(bearToken: string) {
   };
 }
 
-export function auth(req: NextRequest, modelProvider: ModelProvider) {
+async function sendPostRequest(
+  username: string,
+  password: string,
+): Promise<boolean> {
+  const url = "https://auth.shiyancang.cn:8080/users/login";
+  console.log("username: ", username, "password: ", password);
+
+  try {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+    });
+    if (!response.ok) {
+      // 如果响应的状态码不是 2xx, 打印出状态码和文本信息
+      const errorText = await response.text();
+      console.error("Error:", response.status, errorText);
+      return false;
+    }
+
+    const responseData = await response.json();
+    if (responseData.message === "success") {
+      return true;
+    } else {
+      console.error("Error:", responseData.message);
+      return false;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+    return false;
+  }
+}
+
+
+export async function auth(req: NextRequest, modelProvider: ModelProvider) {
+  const username = req.headers.get("username");
+  const password = req.headers.get("password");
+
+  if (username && password) {
+    // 仅当 username 和 password 都不为 null 时调用 sendPostRequest
+    const authorized = await sendPostRequest(username, password);
+    if (!authorized) {
+      return {
+        error: true,
+        msg: "用户名或密码错误，请转到登录界面重新输入后重试！",
+      };
+    }
+  } else {
+    return {
+      error: true,
+      msg: "还未输入账号密码，请转到登陆界面输入后重试！",
+    };
+  }
+
   const authToken = req.headers.get("Authorization") ?? "";
 
   // check if it is openai api key or user token
