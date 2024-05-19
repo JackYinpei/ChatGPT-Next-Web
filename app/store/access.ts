@@ -47,6 +47,7 @@ const DEFAULT_ACCESS_STATE = {
   username: "",
   password: "",
   // hideUserApiKey: false,
+  defaultModel: "gpt-4o",
   hideUserApiKey: true,
   hideBalanceQuery: false,
   disableGPT4: false,
